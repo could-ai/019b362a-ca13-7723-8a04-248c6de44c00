@@ -14,7 +14,7 @@ class _ConnectServicesScreenState extends State<ConnectServicesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF0F0F23),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -34,6 +34,13 @@ class _ConnectServicesScreenState extends State<ConnectServicesScreen> {
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
+                shadows: [
+                  Shadow(
+                    blurRadius: 8.0,
+                    color: Color(0xFF6A1B9A),
+                    offset: Offset(0, 0),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 12),
@@ -50,7 +57,7 @@ class _ConnectServicesScreenState extends State<ConnectServicesScreen> {
             _buildServiceCard(
               title: 'Spotify',
               icon: Icons.music_note,
-              color: const Color(0xFF1DB954),
+              gradientColors: [const Color(0xFF1DB954), const Color(0xFF6A1B9A)],
               isConnected: isSpotifyConnected,
               onTap: () {
                 setState(() {
@@ -72,7 +79,7 @@ class _ConnectServicesScreenState extends State<ConnectServicesScreen> {
             _buildServiceCard(
               title: 'Letterboxd',
               icon: Icons.movie,
-              color: const Color(0xFF40BCF4), // Letterboxd Blue/Green/Orange mix - using blue for contrast
+              gradientColors: [const Color(0xFF40BCF4), const Color(0xFF2196F3)],
               isConnected: isLetterboxdConnected,
               onTap: () {
                 setState(() {
@@ -99,14 +106,15 @@ class _ConnectServicesScreenState extends State<ConnectServicesScreen> {
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  disabledBackgroundColor: Colors.white24,
+                  backgroundColor: const Color(0xFF9C27B0),
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: const Color(0xFF1A1A2E),
                   disabledForegroundColor: Colors.white38,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
+                  elevation: 6,
                 ),
                 child: const Text(
                   'Continue',
@@ -124,29 +132,41 @@ class _ConnectServicesScreenState extends State<ConnectServicesScreen> {
   Widget _buildServiceCard({
     required String title,
     required IconData icon,
-    required Color color,
+    required List<Color> gradientColors,
     required bool isConnected,
     required VoidCallback onTap,
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
+      borderRadius: BorderRadius.circular(20),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.grey[900],
-          borderRadius: BorderRadius.circular(16),
-          border: isConnected ? Border.all(color: color, width: 2) : null,
+          gradient: LinearGradient(
+            colors: gradientColors.map((color) => color.withOpacity(isConnected ? 0.8 : 0.5)).toList(),
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          border: isConnected ? Border.all(color: const Color(0xFF6A1B9A), width: 3) : null,
+          boxShadow: [
+            BoxShadow(
+              color: gradientColors.first.withOpacity(0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.2),
+                color: Colors.white.withOpacity(0.2),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: color, size: 30),
+              child: Icon(icon, color: Colors.white, size: 30),
             ),
             const SizedBox(width: 20),
             Expanded(
@@ -165,16 +185,16 @@ class _ConnectServicesScreenState extends State<ConnectServicesScreen> {
                     isConnected ? 'Connected' : 'Tap to connect',
                     style: TextStyle(
                       fontSize: 14,
-                      color: isConnected ? color : Colors.white54,
+                      color: Colors.white70,
                     ),
                   ),
                 ],
               ),
             ),
             if (isConnected)
-              Icon(Icons.check_circle, color: color)
+              const Icon(Icons.check_circle, color: Colors.white, size: 24)
             else
-              const Icon(Icons.arrow_forward_ios, color: Colors.white24, size: 16),
+              const Icon(Icons.arrow_forward_ios, color: Colors.white54, size: 16),
           ],
         ),
       ),

@@ -6,9 +6,9 @@ class ProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF0F0F23),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF1A1A2E),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -22,7 +22,7 @@ class ProfileTab extends StatelessWidget {
             const SizedBox(height: 20),
             const CircleAvatar(
               radius: 50,
-              backgroundColor: Colors.grey,
+              backgroundColor: Color(0xFF9C27B0),
               child: Icon(Icons.person, size: 50, color: Colors.white),
             ),
             const SizedBox(height: 16),
@@ -63,14 +63,14 @@ class ProfileTab extends StatelessWidget {
                     'Spotify',
                     'Connected as user123',
                     Icons.music_note,
-                    const Color(0xFF1DB954),
+                    [const Color(0xFF1DB954), const Color(0xFF6A1B9A)],
                   ),
                   const SizedBox(height: 12),
                   _buildAccountTile(
                     'Letterboxd',
                     'Connected as filmbuff',
                     Icons.movie,
-                    const Color(0xFF40BCF4),
+                    [const Color(0xFF40BCF4), const Color(0xFF2196F3)],
                   ),
                 ],
               ),
@@ -107,22 +107,33 @@ class ProfileTab extends StatelessWidget {
     );
   }
 
-  Widget _buildAccountTile(String title, String subtitle, IconData icon, Color color) {
+  Widget _buildAccountTile(String title, String subtitle, IconData icon, List<Color> gradientColors) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          colors: gradientColors.map((color) => color.withOpacity(0.6)).toList(),
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: gradientColors.first.withOpacity(0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: Colors.white.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: color, size: 20),
+            child: Icon(icon, color: Colors.white, size: 20),
           ),
           const SizedBox(width: 16),
           Column(
@@ -146,7 +157,7 @@ class ProfileTab extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          const Icon(Icons.check_circle, color: Colors.green, size: 20),
+          const Icon(Icons.check_circle, color: Colors.white, size: 20),
         ],
       ),
     );
@@ -155,7 +166,16 @@ class ProfileTab extends StatelessWidget {
   Widget _buildSettingsTile(IconData icon, String title) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: Icon(icon, color: Colors.white70),
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [const Color(0xFF9C27B0), const Color(0xFF2196F3)],
+          ),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: Colors.white, size: 18),
+      ),
       title: Text(
         title,
         style: const TextStyle(color: Colors.white, fontSize: 16),

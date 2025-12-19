@@ -12,9 +12,10 @@ class LoginScreen extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.black,
-              Color(0xFF1DB954).withOpacity(0.3), // Spotify Green hint
-              Color(0xFF40BCF4).withOpacity(0.3), // Letterboxd Blue hint
+              const Color(0xFF0F0F23), // Deep background
+              const Color(0xFF6A1B9A).withOpacity(0.8), // Deep purple
+              const Color(0xFF2196F3).withOpacity(0.6), // Vibrant blue
+              const Color(0xFF9C27B0).withOpacity(0.4), // Lighter purple-blue
             ],
           ),
         ),
@@ -26,10 +27,14 @@ class LoginScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Spacer(),
-                const Icon(
-                  Icons.hub,
-                  size: 80,
-                  color: Colors.white,
+                AnimatedOpacity(
+                  opacity: 1.0,
+                  duration: const Duration(seconds: 2),
+                  child: const Icon(
+                    Icons.hub,
+                    size: 80,
+                    color: Colors.white,
+                  ),
                 ),
                 const SizedBox(height: 24),
                 const Text(
@@ -40,6 +45,13 @@ class LoginScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                     letterSpacing: 1.5,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 10.0,
+                        color: Color(0xFF6A1B9A),
+                        offset: Offset(0, 0),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -58,11 +70,13 @@ class LoginScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
+                    foregroundColor: const Color(0xFF6A1B9A),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
+                    elevation: 8,
+                    shadowColor: const Color(0xFF2196F3).withOpacity(0.5),
                   ),
                   child: const Text(
                     'Get Started',

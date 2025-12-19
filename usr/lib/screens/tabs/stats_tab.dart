@@ -7,9 +7,9 @@ class StatsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF0F0F23),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF1A1A2E),
         title: const Text(
           'Your Stats',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
@@ -37,11 +37,20 @@ class StatsTab extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    const Color(0xFF1DB954).withOpacity(0.2),
-                    const Color(0xFF40BCF4).withOpacity(0.2),
+                    const Color(0xFF6A1B9A).withOpacity(0.4),
+                    const Color(0xFF2196F3).withOpacity(0.4),
                   ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF9C27B0).withOpacity(0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
               child: const Column(
                 children: [
@@ -71,7 +80,16 @@ class StatsTab extends StatelessWidget {
   Widget _buildSectionHeader(String title, IconData icon, Color color) {
     return Row(
       children: [
-        Icon(icon, color: color),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [color, const Color(0xFF6A1B9A)],
+            ),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: Colors.white, size: 20),
+        ),
         const SizedBox(width: 12),
         Text(
           title,
@@ -88,20 +106,41 @@ class StatsTab extends StatelessWidget {
   Widget _buildList(List<String> items, Color color) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFF1A1A2E),
+            color.withOpacity(0.2),
+          ],
+        ),
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.3),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         children: List.generate(items.length, (index) {
           return Column(
             children: [
               ListTile(
-                leading: Text(
-                  '#${index + 1}',
-                  style: TextStyle(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [color, const Color(0xFF2196F3)],
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    '#${index + 1}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
                 title: Text(
@@ -110,7 +149,7 @@ class StatsTab extends StatelessWidget {
                 ),
               ),
               if (index < items.length - 1)
-                Divider(color: Colors.grey[800], height: 1),
+                Divider(color: Colors.white12, height: 1),
             ],
           );
         }),

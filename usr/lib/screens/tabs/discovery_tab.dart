@@ -7,9 +7,9 @@ class DiscoveryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF0F0F23),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF1A1A2E),
         title: const Text(
           'Discover',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
@@ -26,7 +26,11 @@ class DiscoveryTab extends StatelessWidget {
         itemCount: mockUsers.length,
         itemBuilder: (context, index) {
           final user = mockUsers[index];
-          return _buildUserCard(context, user);
+          return AnimatedOpacity(
+            opacity: 1.0,
+            duration: Duration(milliseconds: 500 + index * 100),
+            child: _buildUserCard(context, user),
+          );
         },
       ),
     );
@@ -36,8 +40,22 @@ class DiscoveryTab extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFF1A1A2E),
+            const Color(0xFF6A1B9A).withOpacity(0.3),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF2196F3).withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +68,7 @@ class DiscoveryTab extends StatelessWidget {
                 CircleAvatar(
                   radius: 30,
                   backgroundImage: NetworkImage(user.avatarUrl),
-                  backgroundColor: Colors.grey[800],
+                  backgroundColor: const Color(0xFF9C27B0),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
@@ -69,13 +87,15 @@ class DiscoveryTab extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: _getMatchColor(user.matchPercentage).withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(8),
+                          gradient: LinearGradient(
+                            colors: _getMatchGradient(user.matchPercentage),
+                          ),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           '${user.matchPercentage}% Match',
-                          style: TextStyle(
-                            color: _getMatchColor(user.matchPercentage),
+                          style: const TextStyle(
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
@@ -132,10 +152,10 @@ class DiscoveryTab extends StatelessWidget {
     );
   }
 
-  Color _getMatchColor(int percentage) {
-    if (percentage >= 90) return Colors.greenAccent;
-    if (percentage >= 75) return Colors.lightGreen;
-    if (percentage >= 60) return Colors.yellow;
-    return Colors.orange;
+  List<Color> _getMatchGradient(int percentage) {
+    if (percentage >= 90) return [Colors.greenAccent, const Color(0xFF6A1B9A)];
+    if (percentage >= 75) return [Colors.lightGreen, const Color(0xFF2196F3)];
+    if (percentage >= 60) return [Colors.yellow, const Color(0xFF9C27B0)];
+    return [Colors.orange, const Color(0xFF6A1B9A)];
   }
 }
